@@ -82,5 +82,5 @@ interface MessageInterface
      * @param string $header Case-insensitive header name.
      * @return string[]
      */
-    public function getHeaderAsArray($header);
+    public function getHeaderLines($header);
 }
