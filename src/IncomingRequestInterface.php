@@ -23,8 +23,11 @@ namespace Psr\Http\Message;
  * - Upload files, if any (as represented by $_FILES)
  * - Deserialized body parameters (generally from $_POST)
  *
- * The above values MUST be immutable, in order to ensure that all consumers of
- * the request instance within a given request cycle receive the same information.
+ * Server and upload files MUST be immutable, as they represent the result of PHP
+ * processes that cannot be recreated in userland. Cookies, query string arguments,
+ * and body parameters are mutable to mimic PHP's policy around the equivalent
+ * superglobals, real-world use cases, and equivalent functionality in other
+ * languages.
  *
  * Additionally, this interface recognizes the utility of introspecting a
  * request to derive and match additional parameters (e.g., via URI path 
@@ -80,6 +83,19 @@ interface IncomingRequestInterface extends MessageInterface
     public function getCookieParams();
 
     /**
+     * Set cookie parameters.
+     *
+     * Inject the request object with cookie parameters, replacing any
+     * previously set.
+     *
+     * See getCookieParams(), above, for more information.
+     *
+     * @param array $cookies Cookie key/value pairs to set.
+     * @return void
+     */
+    public function setCookieParams(array $cookies);
+
+    /**
      * Retrieve query string arguments.
      *
      * Retrieves the deserialized query string arguments, if any.
@@ -95,6 +111,19 @@ interface IncomingRequestInterface extends MessageInterface
      * @return array
      */
     public function getQueryParams();
+
+    /**
+     * Set query string arguments.
+     *
+     * Inject the request object with query string arguments, replacing any
+     * previously set.
+     *
+     * See getQueryParams(), above, for more information.
+     *
+     * @param array $params Deserialized query string arguments.
+     * @return void
+     */
+    public function setQueryParams(array $params);
 
     /**
      * Retrieve the upload file metadata.
@@ -121,6 +150,19 @@ interface IncomingRequestInterface extends MessageInterface
      * @return array The deserialized body parameters, if any.
      */
     public function getBodyParams();
+
+    /**
+     * Set request body parameters.
+     *
+     * Inject the request object with deserialized message body parameters,
+     * overwriting any previously set.
+     *
+     * See getBodyParams(), above, for more information.
+     *
+     * @param array $params Deserialized message body parameters.
+     * @return void
+     */
+    public function setBodyParams(array $params);
 
     /**
      * Retrieve attributes derived from the request.
