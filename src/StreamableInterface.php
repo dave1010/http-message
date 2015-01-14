@@ -126,17 +126,27 @@ interface StreamableInterface
     public function getContents();
 
     /**
-     * Get stream metadata as an associative array or retrieve a specific key.
+     * Get stream metadata as an associative array.
      *
      * The keys returned are identical to the keys returned from PHP's
      * stream_get_meta_data() function.
      *
      * @link http://php.net/manual/en/function.stream-get-meta-data.php
-     * @param string $key Specific metadata to retrieve.
-     * @return array|mixed|null Returns an associative array if no key is
-     *                          provided. Returns a specific key value if a key
-     *                          is provided and the value is found, or null if
-     *                          the key is not found.
+     * @return array Returns an associative array.
      */
-    public function getMetadata($key = null);
+    public function getMetadata();
+
+
+    /**
+     * Get a specific stream metadata value.
+     *
+     * The keys available are identical to the keys returned from PHP's
+     * stream_get_meta_data() function.
+     *
+     * @link http://php.net/manual/en/function.stream-get-meta-data.php
+     * @param string $key Specific metadata to retrieve.
+     * @return mixed|null Returns a specific key value if the value is
+     *                    found, or null if the key is not found.
+     */
+    public function getMetadataValue($key);
 }
